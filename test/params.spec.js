@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { createStore, applyMiddleware } from 'redux';
-import middleware from '../src/middleware';
-import reducer, { ACTIONS, INITIAL_STATE } from './testReducer';
+import { ACTIONS, setupStore } from './testUtils';
 
 describe('params', () => {
   let store;
@@ -13,22 +11,14 @@ describe('params', () => {
   };
   const myMiddleware = {
     [ACTIONS.ONE]: {
-      handler: ({ params }) => () => {
+      handler: (action, { params }) => {
         params.foo.doit();
       },
     },
   };
 
-  function setup(mw) {
-    store = createStore(
-      reducer,
-      INITIAL_STATE,
-      applyMiddleware(middleware(mw, myParams)),
-    );
-  }
-
   beforeEach(() => {
-    setup(myMiddleware);
+    store = setupStore(myMiddleware, myParams);
   });
 
   it('should receive params as args', () => {

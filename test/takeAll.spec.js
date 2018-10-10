@@ -1,26 +1,16 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { createStore, applyMiddleware } from 'redux';
-import middleware from '../src/middleware';
-import reducer, { ACTIONS, INITIAL_STATE } from './testReducer';
+import { setupStore, ACTIONS } from './testUtils';
 
 describe('take all', () => {
-  let store, spy;
+  let spy, store;
   const myMiddleware = {
     [ACTIONS.ONE]: {
-      handler: () => () => {
+      handler: () => {
         spy();
       },
     },
   };
-
-  function setup(mw) {
-    store = createStore(
-      reducer,
-      INITIAL_STATE,
-      applyMiddleware(middleware(mw)),
-    );
-  }
 
   beforeEach(() => {
     spy = sinon.spy();
@@ -42,7 +32,7 @@ describe('take all', () => {
     [myMiddleware, [myMiddleware]].forEach(mw => {
       context(`middleware argument is ${typeof mw}`, () => {
         beforeEach(() => {
-          setup(mw);
+          store = setupStore(myMiddleware);
         });
 
         it('should catch action', () => {

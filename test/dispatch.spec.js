@@ -1,36 +1,26 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { createStore, applyMiddleware } from 'redux';
-import middleware from '../src/middleware';
-import reducer, { ACTIONS, INITIAL_STATE } from './testReducer';
+import { setupStore, ACTIONS } from './testUtils';
 
 describe('dispatch', () => {
   let store;
   const spy = sinon.spy();
   const myMiddleware = {
     [ACTIONS.ONE]: {
-      handler: ({ dispatch }) => () => {
+      handler: (action, { dispatch }) => {
         spy(ACTIONS.ONE);
         dispatch({ type: ACTIONS.TWO });
       },
     },
     [ACTIONS.TWO]: {
-      handler: () => () => {
+      handler: () => {
         spy();
       },
     },
   };
 
-  function setup(mw) {
-    store = createStore(
-      reducer,
-      INITIAL_STATE,
-      applyMiddleware(middleware(mw)),
-    );
-  }
-
   beforeEach(() => {
-    setup(myMiddleware);
+    store = setupStore(myMiddleware);
   });
 
   it('should dispatch action', done => {

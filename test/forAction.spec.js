@@ -1,15 +1,13 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { createStore, applyMiddleware } from 'redux';
-import middleware from '../src/middleware';
-import reducer, { ACTIONS, INITIAL_STATE } from './testReducer';
+import { ACTIONS, setupStore } from './testUtils';
 
 describe('forAction', () => {
   let store;
   const spy = sinon.spy();
   const myMiddleware = {
     [ACTIONS.ONE]: {
-      handler: ({ forAction }) => async () => {
+      handler: async (action, { forAction }) => {
         spy(ACTIONS.ONE);
         const payload = await forAction(ACTIONS.TWO);
         spy(payload);
@@ -17,16 +15,8 @@ describe('forAction', () => {
     },
   };
 
-  function setup(mw) {
-    store = createStore(
-      reducer,
-      INITIAL_STATE,
-      applyMiddleware(middleware(mw)),
-    );
-  }
-
   beforeEach(() => {
-    setup(myMiddleware);
+    store = setupStore(myMiddleware);
   });
 
   it('should wait for action', done => {

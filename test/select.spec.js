@@ -1,30 +1,20 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { createStore, applyMiddleware } from 'redux';
-import middleware from '../src/middleware';
-import reducer, { ACTIONS, INITIAL_STATE } from './testReducer';
+import { ACTIONS, INITIAL_STATE, setupStore } from './testUtils';
 
 describe('select', () => {
   let store;
   const spy = sinon.spy();
   const myMiddleware = {
     [ACTIONS.ONE]: {
-      handler: ({ select }) => () => {
+      handler: (action, { select }) => {
         spy(select('prop'));
       },
     },
   };
 
-  function setup(mw) {
-    store = createStore(
-      reducer,
-      INITIAL_STATE,
-      applyMiddleware(middleware(mw)),
-    );
-  }
-
   beforeEach(() => {
-    setup(myMiddleware);
+    store = setupStore(myMiddleware);
   });
 
   it('should select from state', () => {
