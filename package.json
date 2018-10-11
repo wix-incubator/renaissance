@@ -19,7 +19,8 @@
     "pretest": "yoshi build",
     "test": "yoshi test",
     "posttest": "yoshi lint",
-    "release": "yoshi release"
+    "release": "yoshi release",
+    "example": "cd ./example && npm start"
   },
   "devDependencies": {
     "chai": "~4.1.0",

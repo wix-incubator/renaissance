@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <link type="image/png" href="https://www.wix.com/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="${clientTopology.staticsBaseUrl}app#if(!${debug}).min#{end}.css">
+    <script src="https://${clientTopology.staticsDomain}/polyfill/v2/polyfill#if(!${debug}).min#{end}.js?features=default,es6,es7,es2017&flags=gated&unknown=polyfill&rum=0"></script>
+    <script src="https://${clientTopology.staticsDomain}/unpkg/react@15.6.1/dist/react#if(!${debug}).min#{end}.js"></script>
+    <script src="https://${clientTopology.staticsDomain}/unpkg/react-dom@15.6.1/dist/react-dom#if(!${debug}).min#{end}.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.__BASEURL__ = '${basename}';
+      window.__LOCALE__ = '${locale}';
+      window.__STATICS_BASE_URL__ = '${clientTopology.staticsBaseUrl}';
+    </script>
+    <script src="${clientTopology.staticsBaseUrl}app.bundle#if(!${debug}).min#{end}.js"></script>
+  </body>
+</html>
