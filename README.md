@@ -29,11 +29,15 @@ const myReducer = (state = INITIAL_STATE, action) => {
   // do reducer stuff
   ...
 };
-const myMiddleware = (action) => {
-  ...
-  // do middleware stuff
-  ...
-};
+const myMiddleware = {
+  MY_ACTION: {
+    handler: (action) => {
+       ...
+       // do middleware stuff
+       ...
+     };
+  }
+}
 
 const store = createStore(
   reducer,
